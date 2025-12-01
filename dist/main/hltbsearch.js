@@ -48,9 +48,13 @@ class HltbSearch {
                 users: {
                     sortCategory: "postcount",
                 },
+                "lists": {
+                    "sortCategory": "follows"
+                },
                 "filter": "",
                 "sort": 0,
-                "randomizer": 0
+                "randomizer": 0,
+                "useCache": true
             }
         };
     }
