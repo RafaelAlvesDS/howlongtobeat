@@ -43,33 +43,33 @@ class HltbSearch {
                         "min": "",
                         "max": ""
                     },
-                    modifier: "",
+                    "modifier": ""
                 },
-                users: {
-                    sortCategory: "postcount",
+                "users": {
+                    "sortCategory": "postcount"
+                },
+                "lists": {
+                    "sortCategory": "follows"
                 },
                 "filter": "",
                 "sort": 0,
-                "randomizer": 0
+                "randomizer": 0,
+                "useCache": true
             }
         };
     }
     detailHtml(gameId, signal) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                let result = yield axios
-                    .get(`${HltbSearch.DETAIL_URL}${gameId}`, {
+                let result = yield axios.get(`${HltbSearch.DETAIL_URL}${gameId}`, {
                     headers: {
-                        "User-Agent": new UserAgent().toString(),
-                        origin: "https://howlongtobeat.com",
-                        referer: "https://howlongtobeat.com",
+                        'User-Agent': new UserAgent().toString(),
+                        'origin': 'https://howlongtobeat.com',
+                        'referer': 'https://howlongtobeat.com'
                     },
                     timeout: 20000,
                     signal,
-                })
-                    .catch((e) => {
-                    throw e;
-                });
+                }).catch(e => { throw e; });
                 return result.data;
             }
             catch (error) {
@@ -161,8 +161,8 @@ class HltbSearch {
 }
 HltbSearch.BASE_URL = 'https://howlongtobeat.com/';
 HltbSearch.DETAIL_URL = `${HltbSearch.BASE_URL}game?id=`;
-HltbSearch.SEARCH_URL = `${HltbSearch.BASE_URL}api/locate/`;
+HltbSearch.SEARCH_URL = `${HltbSearch.BASE_URL}api/s/`;
 HltbSearch.IMAGE_URL = `${HltbSearch.BASE_URL}games/`;
-HltbSearch.SEARCH_KEY_PATTERN = /"\/api\/locate\/".concat\("([a-zA-Z0-9]+)"\).concat\("([a-zA-Z0-9]+)"\)/g;
+HltbSearch.SEARCH_KEY_PATTERN = /"\/api\/s\/".concat\("([a-zA-Z0-9]+)"\).concat\("([a-zA-Z0-9]+)"\)/g;
 exports.HltbSearch = HltbSearch;
 //# sourceMappingURL=hltbsearch.js.map
