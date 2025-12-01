@@ -16,7 +16,7 @@ It is an awesome website and a great service, also heavily living from community
 ### Install the dependency
 
 ```javascript
-npm install howlongtobeat --save
+npm install git+https://github.com/RafaelAlvesDS/howlongtobeat.git --save
 ```
 
 ### Use in code
