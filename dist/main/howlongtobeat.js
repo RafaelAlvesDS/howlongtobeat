@@ -10,8 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HowLongToBeatParser = exports.HowLongToBeatEntry = exports.HowLongToBeatService = void 0;
-const cheerio = require('cheerio');
-const levenshtein = require('fast-levenshtein');
+const cheerio = require("cheerio");
+const levenshtein = require("fast-levenshtein");
 const hltbsearch_1 = require("./hltbsearch");
 class HowLongToBeatService {
     constructor() {

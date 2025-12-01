@@ -97,14 +97,14 @@ class HltbSearch {
                 if (!this.searchKey) {
                     this.searchKey = yield this.getSearchKey();
                 }
-                const searchUrlWithKey = HltbSearch.SEARCH_URL + this.searchKey;
-                let result = yield axios.post(searchUrlWithKey, search, {
+                let result = yield axios.post(HltbSearch.SEARCH_URL, search, {
                     headers: {
                         "User-Agent": new UserAgent().toString(),
                         'Accept': '*/*',
                         "Content-Type": "application/json",
                         "Origin": "https://howlongtobeat.com",
                         "Referer": `https://howlongtobeat.com/`,
+                        "x-auth-token": this.searchKey,
                     },
                     timeout: 20000,
                     signal,
@@ -125,48 +125,26 @@ class HltbSearch {
     }
     getSearchKey() {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield axios.get(HltbSearch.BASE_URL, {
-                headers: {
-                    "User-Agent": new UserAgent().toString(),
-                    origin: "https://howlongtobeat.com",
-                    referer: "https://howlongtobeat.com",
-                },
-            });
-            const html = res.data;
-            const $ = cheerio.load(html);
-            const scripts = $("script[src]");
-            for (const el of scripts) {
-                const src = $(el).attr("src");
-                if (!src.includes("_app-")) {
-                    continue;
-                }
-                const scriptUrl = HltbSearch.BASE_URL + src;
-                try {
-                    const res = yield axios.get(scriptUrl, {
-                        headers: {
-                            "User-Agent": new UserAgent().toString(),
-                            origin: "https://howlongtobeat.com",
-                            referer: "https://howlongtobeat.com",
-                        },
-                    });
-                    const scriptText = res.data;
-                    const matches = [...scriptText.matchAll(HltbSearch.SEARCH_KEY_PATTERN)];
-                    const firstKey = matches[0][1];
-                    const secondKey = matches[0][2];
-                    return firstKey.concat(secondKey);
-                }
-                catch (error) {
-                    continue;
-                }
+            const url = `${HltbSearch.SEARCH_URL}/init?t=${Date.now()}`;
+            try {
+                const res = yield axios.get(url, {
+                    headers: {
+                        "User-Agent": new UserAgent().toString(),
+                        origin: "https://howlongtobeat.com",
+                        referer: "https://howlongtobeat.com",
+                    },
+                });
+                return res.data.token;
             }
-            throw new Error("Could not find search key");
+            catch (error) {
+                throw new Error("Could not find search key");
+            }
         });
     }
 }
-HltbSearch.BASE_URL = 'https://howlongtobeat.com/';
-HltbSearch.DETAIL_URL = `${HltbSearch.BASE_URL}game?id=`;
-HltbSearch.SEARCH_URL = `${HltbSearch.BASE_URL}api/locate/`;
-HltbSearch.IMAGE_URL = `${HltbSearch.BASE_URL}games/`;
-HltbSearch.SEARCH_KEY_PATTERN = /"\/api\/locate\/".concat\("([a-zA-Z0-9]+)"\).concat\("([a-zA-Z0-9]+)"\)/g;
 exports.HltbSearch = HltbSearch;
+HltbSearch.BASE_URL = "https://howlongtobeat.com/";
+HltbSearch.DETAIL_URL = `${HltbSearch.BASE_URL}game?id=`;
+HltbSearch.SEARCH_URL = `${HltbSearch.BASE_URL}api/search`;
+HltbSearch.IMAGE_URL = `${HltbSearch.BASE_URL}games/`;
 //# sourceMappingURL=hltbsearch.js.map
